@@ -4,10 +4,10 @@
 void testApp::setup(){
 	lightArrayBlue = new Array( 0, 0, 0, 0, 0 );
 	lightArrayRed = new Array( 0, 0, 0, 0, 0 );
+	intensityBlue = 0;
+	intensityRed = 0;
 	temperature = 16f;
 	water = FALSE;
-	
-	
 }
 
 //--------------------------------------------------------------
@@ -27,7 +27,20 @@ void testApp::readCSV(){
 
 //--------------------------------------------------------------
 void testApp::convertAngle(int angle, string blueOrRed){
+	int intAngle = angle / 36;			// get the first active array
+	float fractionAngle = angle / 36f;	// get the fraction between the first and second active arrays
+	fractionAngle -= intAngle;
 	
+	if(blueOrRed == "BLUE")
+	{
+		lightArrayBlue[intAngle] = int((1f - fractionAngle) * float(intensityBlue));
+		lightArrayBlue[intAngle+1] = int(fractionAngle * float(intensityBlue));
+	}
+	else
+	{
+		lightArrayRed[intAngle] = int((1f - fractionAngle) * float(intensityRed));
+		lightArrayRed[intAngle+1] = int(fractionAngle * float(intensityRed));
+	}
 }
 
 //--------------------------------------------------------------

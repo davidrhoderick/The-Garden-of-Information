@@ -32,6 +32,8 @@ class testApp : public ofBaseApp{
 		
 		Array lightArrayBlue[];	// lightArrayBlue contains the 5 lights' values for the blue light array
 		Array lightArrayRed[];	// lightArrayRed contains  the 5 lights' values for the red light array
+		int intensityBlue;		// intensityBlue is the intensity of the blue light
+		int intensityRed;		// intensityRed is the intensity of the red light
 		float temperature;		// temperature is the target temperature for the grow box
 		bool water;				// water is TRUE when a water command needs to be issued and FALSE otherwise
 };

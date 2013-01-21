@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ofMain.h"
+#include "ofEvents.h"
 
 class testApp : public ofBaseApp{
 
@@ -19,6 +20,8 @@ class testApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 		
+		
+		void setupArduino(const int & version);
 		// readCSV reads the data from the CSV file and assigns it to the variables
 		void readCSV();
 		// convertAngle changes the angle of the sunlight into the values for the light array
@@ -29,6 +32,11 @@ class testApp : public ofBaseApp{
 		void receiveFromArduino();
 		// saves data from the grow box to a file
 		void saveToFile();
+	
+		void updateArduino();
+	
+		ofArduino ard;
+		bool bSetupArduino;
 		
 		Array lightArrayBlue[];	// lightArrayBlue contains the 5 lights' values for the blue light array
 		Array lightArrayRed[];	// lightArrayRed contains  the 5 lights' values for the red light array

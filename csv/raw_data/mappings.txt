@@ -1,0 +1,6 @@
+CONTROL			ECONOMY				MUSIC				FITBIT
+Light Angle	InterTrade			
+Blue light		NewHomeSales		
+Red light		Unemployment		
+Temperature	CPI					
+Water			WholesaleTrade		

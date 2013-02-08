@@ -11,17 +11,18 @@ class Exaptation1
 	public:
 		// pwmPin is for the pulse-width modulated output pin that is multiplexed
 		
-		// ledPinsArray is a two dimensional array that contains the pins that control the
+		// ledPinAddrs is a two dimensional array that contains the pins that control the
 		// multiplexer.  The outer dimension is the address of the
 		// multiplexer [4] and the inner dimension is for the pin on that multiplexer [2].
 		
-		// fanPins is a one dimensional array of length 2.  It has the address of the heat and
+		// fanPwmPins is a one dimensional array of length 2.  It has the address of the heat and
 		// cool fans respectively.
 		
 		// inputPins is a one dimensional array.  It has the address of the following pins:
 		// analog moisture input, scl for temperature input, sda for temperature input,
 		// scl for light sensor, scl for temperature input.
-		Exaptation1( waterPin, heatPwm, ledPwm, ledPinsArray[], fanPins[] inputPins[] );
+		Exaptation1( int waterPin, int heatPwm, int ledPwmPins[4],
+						int ledPinAddrs[4][2], int fanPwmPins[2], int inputPins[5] );
 		
 		// channel		real		address
 		//------------------------------------------
@@ -38,14 +39,14 @@ class Exaptation1
 		// I make constants for channels in the implementing program for recognizable names.
 		// Change the addresses in _muxAddr[].
 		// value is 0-255 and is written through the ledPwm pin.
-		void writeLEDMux(channel, value);
+		void writeLightChannel( int channel, int value);
 		// heat() returns false if the heatAutoShutdown timer is exceeded and shuts down the
 		// the heater for heatShutdownDuration milliseconds.
 		// value is 0-255 through the heatPwm pin.
-		// speed is 0-255 for the fanPins[]
-		bool heaterOn( value, speed );
+		// speed is 0-255 for the fanPwmPins[]
+		bool heaterOn( int value, int speed);
 		void heaterOff();
-		void ventilateOn(source, speed);	// 0 is outdoors, 1 is indoors
+		void ventilateOn( int source, int speed);	// 0 is outdoors, 1 is indoors
 		void ventilateOff();
 		void water();
 		
@@ -67,13 +68,13 @@ class Exaptation1
 		int _heatTimer;
 		int _heatStatus;				// 0 is off, 1 is on, -1 is cool-down
 		int _ventilateStatus;			// 0 is off, 1 is on.  Both statuses can't be 1 at once
-		int _ledPwm;
-		int _ledPinsArray[];
-		const int _muxAddr[];			// see table above
-		// _fanPins is a one dimensional array where [0] is the fan from indoors but outside the
+		int _ledPwmPins[];
+		int _ledPinAddrs[];
+		const int _MUX_ADDRS[];			// see table above
+		// _fanPwmPins is a one dimensional array where [0] is the fan from indoors but outside the
 		// box, over the heater; and [1] is the fan from the outdoors.
-		int _fanPins[];
-		const int _fanCooldownDelay;
+		int _fanPwmPins[];
+		const int _FAN_COOLDOWN_DURATION;
 		
 		int _moistAn;
 		int _tempSCL;
@@ -81,7 +82,7 @@ class Exaptation1
 		int _lightSCL;
 		int _lightSDA;
 		
-		static int secondsToMHz(input);
-}
+		static int secondsToMHz( int input );
+};
 
 #endif

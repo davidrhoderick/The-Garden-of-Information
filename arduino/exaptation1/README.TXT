@@ -1,0 +1,1 @@
+Here is the library and the controller code for Exaptation #1.  MAKE SURE TO MOVE THE LIBRARIES INTO THE SKETCHES LIBRARY PATH OF ARDUINO AFTER UPDATING LIBRARY.

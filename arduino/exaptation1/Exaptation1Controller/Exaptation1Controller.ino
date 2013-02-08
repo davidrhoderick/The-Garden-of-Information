@@ -1,5 +1,16 @@
 #include <Exaptation1.h>
 
+const int RED_1 = 0;
+const int RED_2 = 1;
+const int RED_3 = 2;
+const int RED_4 = 3;
+const int RED_5 = 4;
+const int BLUE_1 = 5;
+const int BLUE_2 = 6;
+const int BLUE_3 = 7;
+const int BLUE_4 = 8;
+const int BLUE_5 = 9;
+
 int WATER_PIN = 2;
 int HEAT_PWM = 3;
 int LED_MUX_PINS[4][2] = { 
@@ -14,7 +25,7 @@ int FAN_PWM_PINS[2] = { 9, 10 };
 // scl for light sensor, scl for temperature input.
 int INPUT_PINS[5] = { 0, 1, 2, 3, 4 };
 
-Exaptation1 plantRobot( WATER_PIN, HEAT_PWM, LED_PWM_PINS[], LED_MUX_PINS[], FAN_PWM_PINS[], INPUT_PINS[] );
+Exaptation1 plantRobot( WATER_PIN, HEAT_PWM, LED_PWM_PINS, LED_MUX_PINS, FAN_PWM_PINS, INPUT_PINS );
 
 void setup()
 {

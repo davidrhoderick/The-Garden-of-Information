@@ -1,8 +1,8 @@
 #include "Arduino.h"
 #include "Exaptation1.h"
 
-Exaptation1::Exaptation1( int waterPin, int heatPwm, int ledPwm,
-							int ledPinAddrs, int fanPwmPins, int inputPins )
+Exaptation1::Exaptation1( int waterPin, int heatPwm, int ledPwm[4],
+							int ledPinAddrs[4][2], int fanPwmPins[2], int inputPins[5] )
 {
 	
 
@@ -59,7 +59,7 @@ Exaptation1::Exaptation1( int waterPin, int heatPwm, int ledPwm,
 	_waterTimer = 0;
 }
 
-void Exaptation1::writeLEDMux( int channel, int value )
+void Exaptation1::writeLightChannel( int channel, int value )
 {
 	for( int i = 1; i <= 2; i++ )
 	{

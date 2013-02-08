@@ -71,8 +71,8 @@ class Exaptation1
 		int _ledPwmPins[];
 		int _ledPinAddrs[];
 		const int _MUX_ADDRS[];			// see table above
-		// _fanPwmPins is a one dimensional array where [0] is the fan from indoors but outside the
-		// box, over the heater; and [1] is the fan from the outdoors.
+		// _fanPwmPins is a one dimensional array where [0] is the fan from indoors but
+		// outside the box, over the heater; and [1] is the fan from the outdoors.
 		int _fanPwmPins[];
 		const int _FAN_COOLDOWN_DURATION;
 		

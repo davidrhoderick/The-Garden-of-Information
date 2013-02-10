@@ -21,7 +21,7 @@ class testApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 		
 		
-		void setupArduino(const int & version);
+		void setupArduinoSerial(const int & comPort);
 		// readCSV reads the data from the CSV file and assigns it to the variables
 		void readCSV();
 		// convertAngle changes the angle of the sunlight into the values for the light array
@@ -32,9 +32,7 @@ class testApp : public ofBaseApp{
 		void receiveFromArduino();
 		// saves data from the grow box to a file
 		void saveToFile();
-	
-		void updateArduino();
-	
+		
 		ofArduino ard;
 		bool bSetupArduino;
 		

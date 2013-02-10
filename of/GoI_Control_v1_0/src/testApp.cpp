@@ -23,69 +23,53 @@ void testApp::setup(){
 
 //--------------------------------------------------------------
 void testApp::update(){
-	updateArduino();
 }
 
 //--------------------------------------------------------------
-void testApp::setupArduino(const int & version) {
+void testApp::setupArduinoSerial(const int & comPort) {
 	
-	// remove listener because we don't need it anymore
-	ofRemoveListener(ard.EInitialized, this, &testApp::setupArduino);
-    
-    // it is now safe to send commands to the Arduino
-    bSetupArduino = true;
-    
-    // print firmware name and version to the console
-    cout << ard.getFirmwareName() << endl; 
-    cout << "firmata v" << ard.getMajorFirmwareVersion() << "." << ard.getMinorFirmwareVersion() << endl;
-	
-    // Note: pins A0 - A5 can be used as digital input and output.
-    // Refer to them as pins 14 - 19 if using StandardFirmata from Arduino 1.0.
-    // If using Arduino 0022 or older, then use 16 - 21.
-    // Firmata pin numbering changed in version 2.3 (which is included in Arduino 1.0)
-    /*
-    // set pins D2 and A5 to digital input
-    ard.sendDigitalPinMode(2, ARD_INPUT);
-    ard.sendDigitalPinMode(19, ARD_INPUT);  // pin 21 if using StandardFirmata from Arduino 0022 or older
-	
-    // set pin A0 to analog input
-    ard.sendAnalogPinReporting(0, ARD_ANALOG);
-    
-    // set pin D13 as digital output
-	ard.sendDigitalPinMode(13, ARD_OUTPUT);
-    // set pin A4 as digital output
-    ard.sendDigitalPinMode(18, ARD_OUTPUT);  // pin 20 if using StandardFirmata from Arduino 0022 or older
-	
-    // set pin D11 as PWM (analog output)
-	ard.sendDigitalPinMode(11, ARD_PWM);
-    
-    // attach a servo to pin D9
-    // servo motors can only be attached to pin D3, D5, D6, D9, D10, or D11
-    ard.sendServoAttach(9);
-	
-    // Listen for changes on the digital and analog pins
-    ofAddListener(ard.EDigitalPinChanged, this, &testApp::digitalPinChanged);
-    ofAddListener(ard.EAnalogPinChanged, this, &testApp::analogPinChanged); */   
-}
-
-//--------------------------------------------------------------
-void testApp::updateArduino(){
-	
-	// update the arduino, get any data or messages.
-    // the call to ard.update() is required
-	ard.update();
-	
-	// do not send anything until the arduino has been set up
-	if (bSetupArduino) {
-        // fade the led connected to pin D11
-		ard.sendPwm(11, (int)(128 + 128 * sin(ofGetElapsedTimef())));   // pwm...
-	}
-	
+	// FROM SERIAL EXAMPLE
+	/*ofSetVerticalSync(true);
+	 
+	 bSendSerialMessage = false;
+	 ofBackground(255);	
+	 ofSetLogLevel(OF_LOG_VERBOSE);
+	 
+	 font.loadFont("DIN.otf", 64);
+	 
+	 serial.listDevices();
+	 vector <ofSerialDeviceInfo> deviceList = serial.getDeviceList();
+	 
+	 // this should be set to whatever com port your serial device is connected to.
+	 // (ie, COM4 on a pc, /dev/tty.... on linux, /dev/tty... on a mac)
+	 // arduino users check in arduino app....		
+	 serial.setup(0, 9600); //open the first device
+	 //serial.setup("COM4"); // windows example
+	 //serial.setup("/dev/tty.usbserial-A4001JEC",9600); // mac osx example
+	 //serial.setup("/dev/ttyUSB0", 9600); //linux example
+	 
+	 nTimesRead = 0;
+	 nBytesRead = 0;
+	 readTime = 0;
+	 memset(bytesReadString, 0, 4);*/
 }
 
 //--------------------------------------------------------------
 void testApp::draw(){
-
+	
+	// FROM SERIAL EXAMPLE
+	/*if (nBytesRead > 0 && ((ofGetElapsedTimef() - readTime) < 0.5f)){
+	 ofSetColor(0);
+	 } else {
+	 ofSetColor(220);
+	 }
+	 string msg;
+	 msg += "click to test serial:\n";
+	 msg += "nBytes read " + ofToString(nBytesRead) + "\n";
+	 msg += "nTimes read " + ofToString(nTimesRead) + "\n";
+	 msg += "read: " + ofToString(bytesReadString) + "\n";
+	 msg += "(at time " + ofToString(readTime, 3) + ")";
+	 font.drawString(msg, 50, 100);*/
 }
 
 //--------------------------------------------------------------
@@ -119,6 +103,39 @@ void testApp::sendToArduino(){
 //--------------------------------------------------------------
 void testApp::receiveFromArduino(){
 	
+	// FROM SERIAL EXAMPLE
+	/*if (bSendSerialMessage){
+		
+		// (1) write the letter "a" to serial:
+		serial.writeByte('a');
+		
+		// (2) read
+		// now we try to read 3 bytes
+		// since we might not get them all the time 3 - but sometimes 0, 6, or something else,
+		// we will try to read three bytes, as much as we can
+		// otherwise, we may have a "lag" if we don't read fast enough
+		// or just read three every time. now, we will be sure to 
+		// read as much as we can in groups of three...
+		
+		nTimesRead = 0;
+		nBytesRead = 0;
+		int nRead  = 0;  // a temp variable to keep count per read
+		
+		unsigned char bytesReturned[3];
+		
+		memset(bytesReadString, 0, 4);
+		memset(bytesReturned, 0, 3);
+		
+		while( (nRead = serial.readBytes( bytesReturned, 3)) > 0){
+			nTimesRead++;	
+			nBytesRead = nRead;
+		};
+		
+		memcpy(bytesReadString, bytesReturned, 3);
+		
+		bSendSerialMessage = false;
+		readTime = ofGetElapsedTimef();
+	}*/
 }
 
 //--------------------------------------------------------------

@@ -39,20 +39,20 @@ class Exaptation1
 		// I make constants for channels in the implementing program for recognizable names.
 		// Change the addresses in _muxAddr[].
 		// value is 0-255 and is written through the ledPwm pin.
-		void writeLightChannel( int channel, int value);
+		void writeLightChannel( int channel, int value );
 		// heat() returns false if the heatAutoShutdown timer is exceeded and shuts down the
 		// the heater for heatShutdownDuration milliseconds.
 		// value is 0-255 through the heatPwm pin.
 		// speed is 0-255 for the fanPwmPins[]
-		bool heaterOn( int value, int speed);
+		bool heaterOn( int value, int speed );
 		void heaterOff();
-		void ventilateOn( int source, int speed);	// 0 is outdoors, 1 is indoors
+		void ventilateOn( int source, int speed );	// 0 is outdoors, 1 is indoors
 		void ventilateOff();
 		void water();
 		
-		const int heatAutoShutdown;			// shutdown timer for the heater
-		const int heatShutdownDuration;		// the duration of the heater shutdown
-		const int waterDuration;			// how long the water solenoid is open for
+		int heatAutoShutdown;		// shutdown timer for the heater
+		int heatShutdownDuration;	// the duration of the heater shutdown
+		int waterDuration;			// how long the water solenoid is open
 		
 		float getMoisture();
 		float getTemperature();
@@ -68,13 +68,13 @@ class Exaptation1
 		int _heatTimer;
 		int _heatStatus;				// 0 is off, 1 is on, -1 is cool-down
 		int _ventilateStatus;			// 0 is off, 1 is on.  Both statuses can't be 1 at once
-		int _ledPwmPins[];
-		int _ledPinAddrs[];
-		const int _MUX_ADDRS[];			// see table above
+		int _ledPwmPins[4];
+		int _ledPinAddrs[4][2];
+		int _MUX_ADDRS[10][3];
 		// _fanPwmPins is a one dimensional array where [0] is the fan from indoors but
 		// outside the box, over the heater; and [1] is the fan from the outdoors.
-		int _fanPwmPins[];
-		const int _FAN_COOLDOWN_DURATION;
+		int _fanPwmPins[2];
+		int _FAN_COOLDOWN_DURATION;
 		
 		int _moistAn;
 		int _tempSCL;

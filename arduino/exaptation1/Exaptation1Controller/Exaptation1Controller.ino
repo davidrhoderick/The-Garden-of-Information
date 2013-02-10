@@ -14,12 +14,12 @@ const int BLUE_5 = 9;
 int WATER_PIN = 2;
 int HEAT_PWM = 3;
 int LED_MUX_PINS[4][2] = { 
-      { 22, 23 },
       { 24, 25 },
-      { 26, 27 }, 
-      { 28, 29 }
+      { 22, 23 },
+      { 28, 29 },
+      { 26, 27 }
   };
-int LED_PWM_PINS[4] = { 5, 6, 7, 8 };
+int LED_PWM_PINS[4] = { 6, 5, 8, 7 };
 int FAN_PWM_PINS[2] = { 9, 10 };
 // analog moisture input, scl for temperature input, sda for temperature input,
 // scl for light sensor, scl for temperature input.

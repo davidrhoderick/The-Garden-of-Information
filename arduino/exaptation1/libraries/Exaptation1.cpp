@@ -1,11 +1,9 @@
 #include "Arduino.h"
 #include "Exaptation1.h"
 
-Exaptation1::Exaptation1( int waterPin, int heatPwm, int ledPwm[4],
+Exaptation1::Exaptation1( int waterPin, int heatPwm, int ledPwmPins[4],
 							int ledPinAddrs[4][2], int fanPwmPins[2], int inputPins[5] )
 {
-	
-
 	pinMode( waterPin, OUTPUT );
 	_waterPin = waterPin;
 	
@@ -18,13 +16,17 @@ Exaptation1::Exaptation1( int waterPin, int heatPwm, int ledPwm[4],
 		_ledPwmPins[i] = ledPwmPins[i];
 		
 		for( int j = 0; j < 2; j++ )
+		{
 			pinMode( ledPinAddrs[i][j], OUTPUT );
+			_ledPinAddrs[i][j] = ledPinAddrs[i][j];
+		}
 	}
-	_ledPinAddrs = ledPinAddrs;
 	
 	for( int k = 0; k < 2; k++ )
+	{
 		pinMode( fanPwmPins[k], OUTPUT );
-	_fanPwmPins = fanPwmPins;
+		_fanPwmPins[k] = fanPwmPins[k];
+	}
 	
 	pinMode( inputPins[0], OUTPUT );
 	_moistAn= inputPins[0];
@@ -41,29 +43,34 @@ Exaptation1::Exaptation1( int waterPin, int heatPwm, int ledPwm[4],
 	pinMode( inputPins[4], OUTPUT );
 	_lightSDA = inputPins[4];
 	
-	_MUX_ADDRS[10][3] = {
-		{0, 0, 0},
-		{1, 0, 0},
-		{0, 1, 0},
-		{1, 1, 0},
-		{0, 0, 1},
-		{2, 0, 0},
-		{3, 0, 0},
-		{2, 1, 0},
-		{3, 1, 0},
-		{2, 0, 1}
-	};
+	_MUX_ADDRS[10][3] = (
+			(0, 0, 0),
+			(1, 0, 0),
+			(0, 1, 0),
+			(1, 1, 0),
+			(0, 0, 1),
+			(2, 0, 0),
+			(3, 0, 0),
+			(2, 1, 0),
+			(3, 1, 0),
+			(2, 0, 1)
+		);
 	
 	_FAN_COOLDOWN_DURATION = secondsToMHz( 2 * 60 );
 	_heatTimer = 0;
 	_waterTimer = 0;
+	heatAutoShutdown = secondsToMHz( 2 * 60 );
+	heatShutdownDuration = secondsToMHz( 2 * 60 );
+	
+	_heatStatus = 0;
+	_ventilateStatus = 0;
 }
 
 void Exaptation1::writeLightChannel( int channel, int value )
 {
 	for( int i = 1; i <= 2; i++ )
 	{
-		digitalWrite( _ledPinsArray[_MUX_ADDRS[channel][0]], _MUX_ADDRS[channel][i] );
+		digitalWrite( _ledPinAddrs[_MUX_ADDRS[channel][0]][i], _MUX_ADDRS[channel][i+1] );
 	}
 	
 	analogWrite( _ledPwmPins[_MUX_ADDRS[channel][0]], value );
@@ -119,7 +126,7 @@ void Exaptation1::water()
 
 int Exaptation1::getHeaterStatus()
 {
-	return _heaterStatus;
+	return _heatStatus;
 }
 
 int Exaptation1::getVentilateStatus()
@@ -127,7 +134,7 @@ int Exaptation1::getVentilateStatus()
 	return _ventilateStatus;
 }
 
-static int Exaptation1::secondsToMHz( int input )
+int Exaptation1::secondsToMHz( int input )
 {
 	return input * 16000000;
 }

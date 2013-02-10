@@ -229,6 +229,8 @@
 			<key>Layout</key>
 			<array>
 				<dict>
+					<key>BecomeActive</key>
+					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXBottomSmartGroupGIDs</key>
@@ -270,7 +272,7 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>6</integer>
+									<integer>5</integer>
 									<integer>3</integer>
 									<integer>0</integer>
 								</array>
@@ -311,7 +313,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>testApp.cpp</string>
+								<string>testApp.h</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -319,15 +321,15 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>testApp.cpp</string>
+										<string>testApp.h</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>07AE274816C7564100B7748C</string>
+										<string>07E71A2716C756D400862ED1</string>
 										<key>history</key>
 										<array>
+											<string>07E71A2616C756D400862ED1</string>
 											<string>07AE274616C7564100B7748C</string>
-											<string>07AE274716C7564100B7748C</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -339,18 +341,16 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {606, 208}}</string>
+								<string>{{0, 0}, {606, 198}}</string>
 								<key>RubberWindowFrame</key>
 								<string>0 60 840 456 0 0 1680 1028 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>208pt</string>
+							<string>198pt</string>
 						</dict>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -361,14 +361,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 213}, {606, 202}}</string>
+								<string>{{0, 203}, {606, 212}}</string>
 								<key>RubberWindowFrame</key>
 								<string>0 60 840 456 0 0 1680 1028 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>202pt</string>
+							<string>212pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
@@ -387,9 +387,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>07AE274916C7564100B7748C</string>
+				<string>07E71A2816C756D400862ED1</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>07AE274A16C7564100B7748C</string>
+				<string>07E71A2916C756D400862ED1</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -527,10 +527,11 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>07AE274C16C7564100B7748C</string>
-		<string>07AE274D16C7564100B7748C</string>
+		<string>07E71A2B16C756D400862ED1</string>
+		<string>07E71A2C16C756D400862ED1</string>
+		<string>07E71A2D16C756D400862ED1</string>
 		<string>0718095016AB8BA9009BE99D</string>
-		<string>/Users/davidrhoderick/Dropbox/Personal MFACA/Thesis/The Garden of Information/of/GoI_Control_v1_0/GoI_Control_v1_0.xcodeproj</string>
+		<string>/Users/davidrhoderick/Dropbox/Personal MFACA/Thesis/The Garden of Information/of/Exaptation1_Control/Exaptation1_Control.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
 	<string>0 60 840 456 0 0 1680 1028 </string>
@@ -610,7 +611,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>0718095016AB8BA9009BE99D</string>
-				<string>07AE274B16C7564100B7748C</string>
+				<string>07E71A2A16C756D400862ED1</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>

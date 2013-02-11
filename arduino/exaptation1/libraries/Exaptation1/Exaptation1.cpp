@@ -1,9 +1,12 @@
 #include "Arduino.h"
+#include "Wire.h"
 #include "Exaptation1.h"
+#include "LightSensor.h"
 
 Exaptation1::Exaptation1( int waterPin, int heatPwm, int ledPwmPins[4],
 							int ledPinAddrs[4][2], int fanPwmPins[2], int inputPins[5] )
 {
+	LightSensor lightInput();
 	pinMode( waterPin, OUTPUT );
 	_waterPin = waterPin;
 	
@@ -31,6 +34,8 @@ Exaptation1::Exaptation1( int waterPin, int heatPwm, int ledPwmPins[4],
 	pinMode( inputPins[0], OUTPUT );
 	_moistAn= inputPins[0];
 	
+	_tempSensAddr = 0x91 >> 1;
+	
 	pinMode( inputPins[1], OUTPUT );
 	_tempSCL = inputPins[1];
 	
@@ -56,7 +61,7 @@ Exaptation1::Exaptation1( int waterPin, int heatPwm, int ledPwmPins[4],
 			(2, 0, 1)
 		);
 	
-	_FAN_COOLDOWN_DURATION = secondsToMHz( 2 * 60 );
+	_fanCooldownDuration = secondsToMHz( 2 * 60 );
 	_heatTimer = 0;
 	_waterTimer = 0;
 	heatAutoShutdown = secondsToMHz( 2 * 60 );
@@ -64,6 +69,47 @@ Exaptation1::Exaptation1( int waterPin, int heatPwm, int ledPwmPins[4],
 	
 	_heatStatus = 0;
 	_ventilateStatus = 0;
+}
+
+bool Exaptation1::setupLightSensor()
+{
+	Wire.begin();
+	delay(1);  // Wait for ADJD reset sequence
+	lightInput.initADJD_S311();  // Initialize the ADJD-S311, sets up cap and int registers
+
+	/* First we'll see the initial values
+	getRGBC();  // Call this to put new RGB and C values into the colorData array
+	printADJD_S311Values();  // Formats and prints all important registers of ADJD-S311
+	*/
+	Serial.println("\nCalibrating...this may take a moment\n");
+	lightInput.calibrateColor();  // This calibrates R, G, and B int registers
+	lightInput.calibrateClear();  // This calibrates the C int registers
+	lightInput.calibrateCapacitors();  // This calibrates the RGB, and C cap registers
+	lightInput.getRGBC();  // After calibrating, we can get the first RGB and C data readings
+	
+	lightInput.printADJD_S311Values();  // Formats and prints all important ADJD-S311 registers
+	
+	return true;
+}
+
+void Exaptation1::calibrateLightSensor()
+{
+	Serial.println("\nCalibrating...\n");
+	lightInput.calibrateColor();
+	lightInput.calibrateClear();
+	lightInput.calibrateCapacitors();
+	lightInput.getRGBC();
+	lightInput.printADJD_S311Values();
+}
+
+void Exaptation1::readLightChannel()
+{
+	while(!Serial.available())
+	;  // Wait till something's pressed
+	char inKey = Serial.read();
+
+	lightInput.getRGBC();
+	lightInput.printADJD_S311Values();
 }
 
 void Exaptation1::writeLightChannel( int channel, int value )
@@ -74,6 +120,23 @@ void Exaptation1::writeLightChannel( int channel, int value )
 	}
 	
 	analogWrite( _ledPwmPins[_MUX_ADDRS[channel][0]], value );
+}
+
+float Exaptation1::readTemperature()
+{
+	int temperature = 0;
+	// step 1: request reading from sensor 
+	Wire.requestFrom(_tempSensAddr, 2); 
+
+	if (2 <= Wire.available())  // if two bytes were received 
+	{
+		_tempMsb = Wire.read();  // receive high byte (full degrees)
+		_tempLsb = Wire.read();  // receive low byte (fraction degrees) 
+		temperature = ((_tempMsb) << 4);  // MSB
+		temperature |= (_tempLsb >> 4);   // LSB
+		temperature *= 0.0625;
+	}
+	return temperature;
 }
 
 bool Exaptation1::heaterOn( int value = 128, int speed = 128 )

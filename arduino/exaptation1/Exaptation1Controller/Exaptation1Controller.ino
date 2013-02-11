@@ -1,4 +1,6 @@
 #include <Exaptation1.h>
+#include <LightSensor.h>
+#include <Wire.h>
 
 const int RED_1 = 0;
 const int RED_2 = 1;

@@ -2,6 +2,8 @@
 #define Exaptation1_h
 
 #include "Arduino.h"
+#include "Wire.h"
+#include "LightSensor.h"
 
 // The class Exaptation1 houses the code for the automatic plant growing environment controls
 // and sensors methods.
@@ -44,22 +46,22 @@ class Exaptation1
 		// the heater for heatShutdownDuration milliseconds.
 		// value is 0-255 through the heatPwm pin.
 		// speed is 0-255 for the fanPwmPins[]
-		bool heaterOn( int value, int speed );
-		void heaterOff();
-		void ventilateOn( int source, int speed );	// 0 is outdoors, 1 is indoors
-		void ventilateOff();
-		void water();
+		bool heaterOn( int value, int speed );		// TODO
+		void heaterOff();							// TODO
+		void ventilateOn( int source, int speed );	// TODO 0 is outdoors, 1 is indoors
+		void ventilateOff();						// TODO
+		void water();								// TODO
 		
 		int heatAutoShutdown;		// shutdown timer for the heater
 		int heatShutdownDuration;	// the duration of the heater shutdown
 		int waterDuration;			// how long the water solenoid is open
 		
-		float getMoisture();
-		float getTemperature();
-		float getLight();
+		float getMoisture();						// TODO
+		float readTemperature();					// TODO
+		void readLightChannel();					// TODO
 		
-		int getHeaterStatus();
-		int getVentilateStatus();
+		int getHeaterStatus();						// TODO
+		int getVentilateStatus();					// TODO
 		
 	private:
 		int _waterPin;
@@ -74,13 +76,22 @@ class Exaptation1
 		// _fanPwmPins is a one dimensional array where [0] is the fan from indoors but
 		// outside the box, over the heater; and [1] is the fan from the outdoors.
 		int _fanPwmPins[2];
-		int _FAN_COOLDOWN_DURATION;
+		int _fanCooldownDuration;
 		
 		int _moistAn;
 		int _tempSCL;
 		int _tempSDA;
 		int _lightSCL;
 		int _lightSDA;
+		
+		int _tempSensAddr;
+		byte _tempMsb;
+		byte _tempLsb;
+		
+		LightSensor lightInput;
+		
+		bool setupLightSensor();
+		void calibrateLightSensor();
 		
 		static int secondsToMHz( int input );
 };

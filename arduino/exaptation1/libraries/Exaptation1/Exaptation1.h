@@ -52,16 +52,14 @@ class Exaptation1
 		void ventilateOff();						// TODO
 		void water();								// TODO
 		
-		int heatAutoShutdown;		// shutdown timer for the heater
-		int heatShutdownDuration;	// the duration of the heater shutdown
-		int waterDuration;			// how long the water solenoid is open
-		
 		float getMoisture();						// TODO
 		float readTemperature();					// TODO
 		void readLightChannel();					// TODO
 		
 		int getHeaterStatus();						// TODO
 		int getVentilateStatus();					// TODO
+		
+		void printLightChannel( int channel );
 		
 	private:
 		int _waterPin;
@@ -72,19 +70,16 @@ class Exaptation1
 		int _ventilateStatus;			// 0 is off, 1 is on.  Both statuses can't be 1 at once
 		int _ledPwmPins[4];
 		int _ledPinAddrs[4][2];
-		int _MUX_ADDRS[10][3];
 		// _fanPwmPins is a one dimensional array where [0] is the fan from indoors but
 		// outside the box, over the heater; and [1] is the fan from the outdoors.
 		int _fanPwmPins[2];
-		int _fanCooldownDuration;
-		
+
 		int _moistAn;
 		int _tempSCL;
 		int _tempSDA;
 		int _lightSCL;
 		int _lightSDA;
 		
-		int _tempSensAddr;
 		byte _tempMsb;
 		byte _tempLsb;
 		
@@ -95,5 +90,27 @@ class Exaptation1
 		
 		static int secondsToMHz( int input );
 };
+
+const int MUX_ADDRS[10][3] = {
+			{0, 0, 0},
+			{1, 0, 0},
+			{0, 1, 0},
+			{1, 1, 0},
+			{0, 0, 1},
+			{2, 0, 0},
+			{3, 0, 0},
+			{2, 1, 0},
+			{3, 1, 0},
+			{2, 0, 1}
+		};
+		
+const int TEMPERATURE_SENSOR_ADDRESS = 0x91 >> 1;
+		
+// 16000000 * is for the speed of the processor in Hz that is multiplied by 60 seconds and then
+// by the amount of minutes for the duration.
+const int HEAT_AUTO_SHUTDOWN = 16000000 * 60 * 4;
+const int FAN_COOLDOWN_DURATION = 16000000 * 60;
+const int HEAT_SHUTDOWN_DURATION = 16000000 * 60 * 4;
+const int WATER_DURATION = 16000000 * 2;
 
 #endif

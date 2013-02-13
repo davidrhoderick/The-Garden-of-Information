@@ -2,7 +2,7 @@
 
 //--------------------------------------------------------------
 void testApp::setup(){
-	//titleFont.loadFont("arial.ttf", 32);
+	titleFont.loadFont("verdana.ttf", 32);
 }
 
 //--------------------------------------------------------------
@@ -12,7 +12,7 @@ void testApp::update(){
 
 //--------------------------------------------------------------
 void testApp::draw(){
-	//titleFont.drawString( "Exaptation1 Control", 10, 10 );
+	titleFont.drawString( "Exaptation1 Control", 10, 10 );
 }
 
 //--------------------------------------------------------------

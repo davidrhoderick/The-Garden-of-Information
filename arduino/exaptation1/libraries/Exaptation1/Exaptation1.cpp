@@ -7,6 +7,7 @@ Exaptation1::Exaptation1( int waterPin, int heatPwm, int ledPwmPins[4],
 							int ledPinAddrs[4][2], int fanPwmPins[2], int inputPins[5] )
 {
 	LightSensor lightInput();
+	
 	pinMode( waterPin, OUTPUT );
 	_waterPin = waterPin;
 	
@@ -18,10 +19,18 @@ Exaptation1::Exaptation1( int waterPin, int heatPwm, int ledPwmPins[4],
 		pinMode( ledPwmPins[i], OUTPUT );
 		_ledPwmPins[i] = ledPwmPins[i];
 		
+		//Serial.print( "LED PWM pin " );
+		Serial.println( _ledPwmPins[i] );
+		//Serial.println( " ready for output" );
+		
 		for( int j = 0; j < 2; j++ )
 		{
 			pinMode( ledPinAddrs[i][j], OUTPUT );
 			_ledPinAddrs[i][j] = ledPinAddrs[i][j];
+			
+			//Serial.print( "LED address pin " );
+			Serial.println( _ledPinAddrs[i][j] );
+			//Serial.println( " ready for output" );
 		}
 	}
 	
@@ -34,8 +43,6 @@ Exaptation1::Exaptation1( int waterPin, int heatPwm, int ledPwmPins[4],
 	pinMode( inputPins[0], OUTPUT );
 	_moistAn= inputPins[0];
 	
-	_tempSensAddr = 0x91 >> 1;
-	
 	pinMode( inputPins[1], OUTPUT );
 	_tempSCL = inputPins[1];
 	
@@ -47,25 +54,9 @@ Exaptation1::Exaptation1( int waterPin, int heatPwm, int ledPwmPins[4],
 	
 	pinMode( inputPins[4], OUTPUT );
 	_lightSDA = inputPins[4];
-	
-	_MUX_ADDRS[10][3] = (
-			(0, 0, 0),
-			(1, 0, 0),
-			(0, 1, 0),
-			(1, 1, 0),
-			(0, 0, 1),
-			(2, 0, 0),
-			(3, 0, 0),
-			(2, 1, 0),
-			(3, 1, 0),
-			(2, 0, 1)
-		);
-	
-	_fanCooldownDuration = secondsToMHz( 2 * 60 );
+		
 	_heatTimer = 0;
 	_waterTimer = 0;
-	heatAutoShutdown = secondsToMHz( 2 * 60 );
-	heatShutdownDuration = secondsToMHz( 2 * 60 );
 	
 	_heatStatus = 0;
 	_ventilateStatus = 0;
@@ -114,19 +105,22 @@ void Exaptation1::readLightChannel()
 
 void Exaptation1::writeLightChannel( int channel, int value )
 {
-	for( int i = 1; i <= 2; i++ )
+	for( int i = 0; i < 2; i++ )
 	{
-		digitalWrite( _ledPinAddrs[_MUX_ADDRS[channel][0]][i], _MUX_ADDRS[channel][i+1] );
+		digitalWrite( _ledPinAddrs[MUX_ADDRS[channel][0]][i], MUX_ADDRS[channel][i+1] );
+		Serial.print( _ledPinAddrs[MUX_ADDRS[channel][0]][i] );
+		Serial.print( "\t" );
+		Serial.println(MUX_ADDRS[channel][i+1]);
 	}
 	
-	analogWrite( _ledPwmPins[_MUX_ADDRS[channel][0]], value );
+	analogWrite( _ledPwmPins[MUX_ADDRS[channel][0]], value );
 }
 
 float Exaptation1::readTemperature()
 {
 	int temperature = 0;
 	// step 1: request reading from sensor 
-	Wire.requestFrom(_tempSensAddr, 2); 
+	Wire.requestFrom(TEMPERATURE_SENSOR_ADDRESS, 2); 
 
 	if (2 <= Wire.available())  // if two bytes were received 
 	{
@@ -134,14 +128,13 @@ float Exaptation1::readTemperature()
 		_tempLsb = Wire.read();  // receive low byte (fraction degrees) 
 		temperature = ((_tempMsb) << 4);  // MSB
 		temperature |= (_tempLsb >> 4);   // LSB
-		temperature *= 0.0625;
 	}
-	return temperature;
+	return temperature * 0.0625;
 }
 
 bool Exaptation1::heaterOn( int value = 128, int speed = 128 )
 {
-	if( _heatStatus == 1 && _heatTimer < heatAutoShutdown )
+	if( _heatStatus == 1 && _heatTimer < HEAT_AUTO_SHUTDOWN )
 	{
 		analogWrite( _heatPwm, value );
 		analogWrite( _fanPwmPins[0], speed );
@@ -149,7 +142,7 @@ bool Exaptation1::heaterOn( int value = 128, int speed = 128 )
 		_heatTimer++;
 		return true;
 	}
-	/*else if( _heatStatus == 1 && _heatTimer >= heatAutoShutdown  )
+	/*else if( _heatStatus == 1 && _heatTimer >= HEAT_AUTO_SHUTDOWN  )
 	{
 		digitalWrite(_
 	}*/
@@ -200,4 +193,10 @@ int Exaptation1::getVentilateStatus()
 int Exaptation1::secondsToMHz( int input )
 {
 	return input * 16000000;
+}
+
+void Exaptation1::printLightChannel( int channel )
+{
+	for(int i=0; i<3; i++)
+		Serial.println( MUX_ADDRS[channel][i] );
 }

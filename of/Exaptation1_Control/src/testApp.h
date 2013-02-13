@@ -20,7 +20,7 @@ class testApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 	
 	private:
-		//ofTrueTypeFont titleFont;
-		//ofTrueTypeFont subtitleFont;
+		ofTrueTypeFont titleFont;
+		ofTrueTypeFont subtitleFont;
 		
 };

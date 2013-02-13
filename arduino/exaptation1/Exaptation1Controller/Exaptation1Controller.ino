@@ -16,12 +16,12 @@ const int BLUE_5 = 9;
 int WATER_PIN = 2;
 int HEAT_PWM = 3;
 int LED_MUX_PINS[4][2] = { 
-      { 24, 25 },
       { 22, 23 },
-      { 28, 29 },
-      { 26, 27 }
+      { 24, 25 },
+      { 26, 27 },
+      { 28, 29 }
   };
-int LED_PWM_PINS[4] = { 6, 5, 8, 7 };
+int LED_PWM_PINS[4] = { 5, 6, 7, 8 };
 int FAN_PWM_PINS[2] = { 9, 10 };
 // analog moisture input, scl for temperature input, sda for temperature input,
 // scl for light sensor, scl for temperature input.
@@ -31,11 +31,17 @@ Exaptation1 plantRobot( WATER_PIN, HEAT_PWM, LED_PWM_PINS, LED_MUX_PINS, FAN_PWM
 
 void setup()
 {
+  Serial.begin( 9600 );
+  
+  pinMode( 30, OUTPUT );
+  digitalWrite( 30, LOW );
+  /*for(int i=0; i<10; i++)
+    plantRobot.printLightChannel(i);*/
 }
 
 void loop()
 {
-  for( int h = 0; h < 10; h++ )
+  /*for( int h = 0; h < 10; h++ )
   {
     for( int i = 0; i < 256; i++ )
     {
@@ -47,5 +53,12 @@ void loop()
       plantRobot.writeLightChannel( h, i );
       delay( 10 );
     }
-  }
+  }*/
+  
+  plantRobot.writeLightChannel( 9, 20 );
+  delay(100);
+  plantRobot.writeLightChannel( 9, 0 );
+  delay(100);
+  
+  
 }
